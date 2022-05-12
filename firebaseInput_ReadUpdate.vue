@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md q-gutter-sm">
-    <q-btn label="Add Data" color="primary" no-caps @click="prompt = true" />
+    <q-btn label="Input Data" color="primary" no-caps @click="prompt = true" />
 
     <q-dialog v-model="prompt" persistent>
       <q-card style="min-width: 350px">
@@ -36,6 +36,7 @@
 
 <script>
 import db from 'src/boot/firebase'
+import { ClosePopup } from 'quasar';
 
 export default {
   name:'firebaseInput',    
@@ -86,14 +87,15 @@ export default {
             kpi1: this.content.kpi1
         })
         .then(() => {
-            console.log("Document successfully updated!");
+          console.log("Document successfully updated!");
+          this.notifyAlert("Successfull!!", "green");
         })
         .catch((error) => {
             // The document probably doesn't exist.
             console.error("Error updating document: ", error);
+            this.notifyAlert(error, "red");
         });
-
-
+        
     /*    THIS COMMENT AREA IS ADD DATA TO FIRESTORE
     //  db.collection("contents").add(this.content)
     //    .then((docRef) => {
@@ -105,8 +107,11 @@ export default {
     //    });
     */
     },
-    reset(){
-    //  Object.assign(this.$data, this.$options.data.apply(this));
+    notifyAlert(message, color){
+      this.$q.notify({
+          message: message,
+          color: color
+        })
     }
   },
   created(){
