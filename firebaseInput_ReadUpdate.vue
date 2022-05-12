@@ -50,6 +50,23 @@ export default {
   },
   methods: {
     readData(){
+      //BIZIM BURADA ISTEDIGIMIZ COLLECTIONDAN ISTEDIGIMIZ DOCS OKUMAMIZ LAZIM
+      
+      var docRef = db.collection("contents").doc("osman");
+
+      docRef.get().then((doc) => {
+          if (doc.exists) {
+              console.log("Document data:", doc.data());
+              this.contents = doc.data();
+          } else {
+              // doc.data() will be undefined in this case
+              console.log("No such document!");
+          }
+      }).catch((error) => {
+          console.log("Error getting document:", error);
+      });
+
+      /* BU MODEL COLLECTION ICERSINDEKI TUM DOCS LARI ALIYOR
       db.collection("contents").get().then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
               // doc.data() is never undefined for query doc snapshots
@@ -57,6 +74,7 @@ export default {
               this.contents = doc.data();
           });
       });
+      */
     },
 
     submitData(){
